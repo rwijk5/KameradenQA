@@ -9,13 +9,13 @@ using NUnit.Framework;
 
 namespace KameradenQA.Tests
 {
-    class HomeTest
+    class BasicTests
     {
 
         static IWebDriver driver;
         DriverFactory df;
 
-        public HomeTest()
+        public BasicTests()
         {
         }
 
