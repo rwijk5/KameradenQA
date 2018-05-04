@@ -15,10 +15,6 @@ namespace KameradenQA.Tests
         static IWebDriver driver;
         DriverFactory df;
 
-        public BasicTests()
-        {
-        }
-
         [SetUp]
         public void initialize()
         {
@@ -29,12 +25,12 @@ namespace KameradenQA.Tests
         [Test]
         public void PageReferenceTest()
         {
-            String[] NavBar = new String[] {"Home", "Over ons", "Meedoen", "Profielen", "Partners", "Contact", "Inloggen"};
-            String[] PageNames = new String[] {"", "/over-ons", "registreren", "profielen", "partners", "contact", "inloggen" };
-           
-            for(int i = 0; i < NavBar.Length; i++)
+            String[] NavBar = new String[] { "Home", "Over ons", "Meedoen", "Profielen", "Partners", "Contact", "Inloggen" };
+            String[] PageNames = new String[] { "", "/over-ons", "registreren", "profielen", "partners", "contact", "inloggen" };
+
+            for (int i = 0; i < NavBar.Length; i++)
             {
-                for(int j = 0; j < PageNames.Length; j++)
+                for (int j = 0; j < PageNames.Length; j++)
                 {
                     driver.Url = "Kameraden.test:8080" + PageNames[i];
                     driver.FindElement(By.LinkText(NavBar[j])).Click();
@@ -44,7 +40,7 @@ namespace KameradenQA.Tests
                     }
                 }
             }
-   
+
         }
 
         [TearDown]
