@@ -24,7 +24,7 @@ namespace KameradenQA
             switch (browser)
             {
 
-                case "chrome":
+                case "Chrome":
                     driver = new ChromeDriver();
                     break;
                 case "Firefox":
@@ -40,6 +40,11 @@ namespace KameradenQA
                     driver = null;
                     break;
             }
+        }
+
+        public IWebDriver getDriver()
+        {
+            return driver;
         }
     }
 }
