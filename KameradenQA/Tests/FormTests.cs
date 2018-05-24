@@ -23,7 +23,6 @@ namespace KameradenQA.Tests
         [Test]
         public void RegisterTest()
         {
-
             driver.Url = "Kameraden.test:8080/registreren";
             driver.FindElement(By.Id("voornaam")).SendKeys("Jan");
             driver.FindElement(By.Id("achternaam")).SendKeys("Dijk");
@@ -49,9 +48,20 @@ namespace KameradenQA.Tests
             {
                 Assert.Fail();
             }
+        }
 
+        [Test]
+        public void LoginTest()
+        {
+            driver.Url = "Kameraden.test:8080/inloggen";
+            driver.FindElement(By.Name("email")).SendKeys("tim@gmail.com");
+            driver.FindElement(By.Name("password")).SendKeys("test");
+            driver.FindElement(By.Name("login")).Click();
 
-
+            if (!driver.Url.Equals("http://kameraden.test:8080/"))
+            {
+                Assert.Fail();
+            }
         }
 
         [TearDown]
