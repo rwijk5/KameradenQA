@@ -27,6 +27,7 @@ namespace KameradenQA.Tests
         [Test]
         public void RegisterTest()
         {
+            //Fill in first page and continue
             driver.Url = "Kameraden.test:8080/registreren";
             driver.FindElement(By.Id("voornaam")).SendKeys("Jan");
             driver.FindElement(By.Id("achternaam")).SendKeys("Dijk");
@@ -34,6 +35,7 @@ namespace KameradenQA.Tests
             driver.FindElement(By.Id("geboortedatum")).SendKeys("22121980");
             driver.FindElement(By.LinkText("Next")).Click();
 
+            //Fill in second page and continue
             driver.FindElement(By.Id("woonplaats")).SendKeys("Den Bosch");
             driver.FindElement(By.Id("woonwijk")).SendKeys("n.v.t.");
             driver.FindElement(By.Id("adres")).SendKeys("Jan de la barlaan 8");
@@ -42,6 +44,7 @@ namespace KameradenQA.Tests
             driver.FindElement(By.Id("email")).SendKeys("test@test.test");
             driver.FindElement(By.LinkText("Next")).Click();
 
+            //Fill in last page and continue
             driver.FindElement(By.Id("beroep")).SendKeys("Metselaar");
             driver.FindElement(By.Id("sport")).SendKeys("Cricket");
             driver.FindElement(By.Id("beperkingen")).SendKeys("Slecht zicht");
@@ -113,6 +116,7 @@ namespace KameradenQA.Tests
         [Test]
         public void LoginTest()
         {
+            //Enter login credentials and press login button
             driver.Url = "Kameraden.test:8080/inloggen";
             driver.FindElement(By.Name("email")).SendKeys("tim@gmail.com");
             driver.FindElement(By.Name("password")).SendKeys("test");
@@ -141,9 +145,11 @@ namespace KameradenQA.Tests
             driver.FindElement(By.Name("description")).SendKeys("beschrijving");
             driver.FindElement(By.Name("birth-date")).SendKeys("12221980");
 
+            //Count total amount of current interest fields
             int interests;
             interests = driver.FindElements(By.Name("interest[]")).Count();
 
+            //If the cap of 5 interests hasn't been reached add an interest field
             if (interests < 5)
             {
                 int newInterest = interests + 1;
@@ -152,7 +158,7 @@ namespace KameradenQA.Tests
                 interests = driver.FindElements(By.Name("interest[]")).Count();
             }
 
-
+            //Replace interest values with a numeric range from 1-5 (depending on how many fields there are)
             for (int i = 1; i < interests + 1; i++)
             {
                 string interestValue = i.ToString();
@@ -161,9 +167,11 @@ namespace KameradenQA.Tests
 
             }
 
+            //Count the total amount of disability fields
             int disabilities;
             disabilities = driver.FindElements(By.Name("disability[]")).Count();
 
+            //If the cap of 5 disabilities hasn't been reached add an disability field
             if (disabilities < 5)
             {
                 int newDisability = disabilities + 1;
@@ -172,7 +180,7 @@ namespace KameradenQA.Tests
                 disabilities = driver.FindElements(By.Name("disability[]")).Count();
             }
 
-
+            //Replace disability values with a numeric range from 1-5 (depending on how many fields there are)
             for (int i = 1; i < disabilities + 1; i++)
             {
                 string disabilityValue = i.ToString();
@@ -189,7 +197,7 @@ namespace KameradenQA.Tests
             driver.FindElement(By.CssSelector("#nav-list > li:nth-child(7) > div > div.dropdown-content > a:nth-child(1)")).Click();
 
 
-            //Check if the results came trough
+            //Check if the interests results came trough
             for (int i = 2; i < interests + 2; i++)
             {
                 if (driver.FindElement(By.XPath("//*[@id=\"main\"]/div/div[2]/div[1]/div/div/ul[1]/li[" + i + "]")).Text != (i - 1).ToString())
@@ -198,6 +206,7 @@ namespace KameradenQA.Tests
                 }
             }
 
+            //Check if the disability results came trough
             for (int i = 2; i < disabilities + 2; i++)
             {
                 if (driver.FindElement(By.XPath("//*[@id=\"main\"]/div/div[2]/div[1]/div/div/ul[2]/li[" + i + "]")).Text != (i - 1).ToString())

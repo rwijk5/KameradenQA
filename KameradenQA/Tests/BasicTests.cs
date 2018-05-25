@@ -24,6 +24,7 @@ namespace KameradenQA.Tests
         }
 
         [Test]
+        //Check if all the links work correctly on each seperate page by looping trough all of them
         public void PageReferenceTest()
         {
             String[] NavBar = new String[] { "Home", "Over ons", "Evenementen", "Contact", "Doneren", "Meedoen", "Inloggen" };
