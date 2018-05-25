@@ -28,7 +28,7 @@ namespace KameradenQA.Tests
         public void RegisterTest()
         {
             //Fill in first page and continue
-            driver.Url = "Kameraden.test:8080/registreren";
+            driver.Url = "http://Kameraden.test:" + Globals.portnummer + "/registreren";
             driver.FindElement(By.Id("voornaam")).SendKeys("Jan");
             driver.FindElement(By.Id("achternaam")).SendKeys("Dijk");
             driver.FindElement(By.Id("tussenvoegsel")).SendKeys("van");
@@ -51,7 +51,7 @@ namespace KameradenQA.Tests
             driver.FindElement(By.Name("beschrijving")).SendKeys("Ik vind het leuk om piano te spelen");
             driver.FindElement(By.LinkText("Finish")).Click();
 
-            if (!driver.Url.Equals("http://kameraden.test:8080/inloggen"))
+            if (!driver.Url.Equals("http://kameraden.test:" + Globals.portnummer + "/inloggen"))
             {
                 Assert.Fail();
             }
@@ -60,7 +60,7 @@ namespace KameradenQA.Tests
         [Test]
         public void RegisterValidationTest()
         {
-            driver.Url = "Kameraden.test:8080/registreren";
+            driver.Url = "http://Kameraden.test:" + Globals.portnummer + "/registreren";
 
             //Click next button to see which validations trigger
             driver.FindElement(By.LinkText("Next")).Click();
@@ -98,6 +98,7 @@ namespace KameradenQA.Tests
             driver.FindElement(By.Id("postcode")).SendKeys("5212NX");
             driver.FindElement(By.Id("telefoonnummer")).SendKeys("0612345678");
             driver.FindElement(By.Id("email")).SendKeys("test@test.test");
+            driver.FindElement(By.LinkText("Next")).Click();
 
             //Finish the form properly since there are no fields that are required.
             driver.FindElement(By.Id("beroep")).SendKeys("Metselaar");
@@ -106,7 +107,7 @@ namespace KameradenQA.Tests
             driver.FindElement(By.Name("beschrijving")).SendKeys("Ik vind het leuk om piano te spelen");
             driver.FindElement(By.LinkText("Finish")).Click();
 
-            if (!driver.Url.Equals("http://kameraden.test:8080/inloggen"))
+            if (!driver.Url.Equals("http://kameraden.test:" + Globals.portnummer + "/inloggen"))
             {
                 Assert.Fail();
             }
@@ -117,12 +118,12 @@ namespace KameradenQA.Tests
         public void LoginTest()
         {
             //Enter login credentials and press login button
-            driver.Url = "Kameraden.test:8080/inloggen";
+            driver.Url = "http://Kameraden.test:" + Globals.portnummer + "/inloggen";
             driver.FindElement(By.Name("email")).SendKeys("tim@gmail.com");
             driver.FindElement(By.Name("password")).SendKeys("test");
             driver.FindElement(By.Name("login")).Click();
 
-            if (!driver.Url.Equals("http://kameraden.test:8080/"))
+            if (!driver.Url.Equals("http://kameraden.test:" + Globals.portnummer + "/"))
             {
                 Assert.Fail();
             }
@@ -219,8 +220,9 @@ namespace KameradenQA.Tests
         [Test]
         public void ProfilesFilterTest()
         {
+            //Logs in and enters the text "wandelen" in filters, the only account with this filter should be Kay Smits
             LoginTest();
-            driver.Url = "Kameraden.test:8080/profielen";
+            driver.Url = "http://Kameraden.test:" + Globals.portnummer + "/profielen";
             driver.FindElement(By.Id("tagInpt")).SendKeys("Wandelen" + Keys.Enter);
             if (!driver.FindElement(By.ClassName("name")).Text.Contains("Kay Smits") ||
                driver.FindElement(By.ClassName("name")).Text.Contains("Tim Kotkamp"))
@@ -228,6 +230,12 @@ namespace KameradenQA.Tests
                 Assert.Fail();
             }
 
+        }
+
+        [Test]
+        public void PContactformTest()
+        {
+            driver.Url = "http://Kameraden.test:" + Globals.portnummer + "/contact";
         }
 
 
