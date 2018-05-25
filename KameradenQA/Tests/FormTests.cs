@@ -235,7 +235,18 @@ namespace KameradenQA.Tests
         [Test]
         public void PContactformTest()
         {
+            //Fill in contactform, send it and see if the fields are cleared thus confirming is was send.
             driver.Url = "http://Kameraden.test:" + Globals.portnummer + "/contact";
+            driver.FindElement(By.Name("name")).SendKeys("testnaam");
+            driver.FindElement(By.Name("email")).SendKeys("test@test.test");
+            driver.FindElement(By.Name("message")).SendKeys("testvraag");
+            driver.FindElement(By.Name("send")).Click();
+            if (!driver.FindElement(By.Name("name")).Text.Equals("") ||
+                !driver.FindElement(By.Name("email")).Text.Equals("") ||
+                !driver.FindElement(By.Name("message")).Text.Equals(""))
+            {
+                Assert.Fail();
+            }
         }
 
 
