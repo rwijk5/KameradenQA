@@ -141,6 +141,14 @@ namespace KameradenQA.Tests
                     Assert.Fail();
                 }
             }
+
+            for (int i = 2; i < disabilities + 2; i++)
+            {
+                if (driver.FindElement(By.XPath("//*[@id=\"main\"]/div/div[2]/div[1]/div/div/ul[2]/li[" + i + "]")).Text != (i - 1).ToString())
+                {
+                    Assert.Fail();
+                }
+            }
         }
 
 

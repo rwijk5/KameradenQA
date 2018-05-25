@@ -20,14 +20,15 @@ namespace KameradenQA.Tests
         {
             df = new DriverFactory("Chrome");
             driver = df.getDriver();
+            driver.Manage().Window.Maximize();
         }
 
         [Test]
         public void PageReferenceTest()
         {
-            String[] NavBar = new String[] { "Home", "Over ons", "Meedoen", "Profielen", "Partners", "Contact", "Inloggen" };
-            String[] PageNames = new String[] { "", "/over-ons", "registreren", "profielen", "partners", "contact", "inloggen" };
-
+            String[] NavBar = new String[] { "Home", "Over ons", "Evenementen", "Contact", "Doneren", "Meedoen", "Inloggen" };
+            String[] PageNames = new String[] { "/", "/over-ons", "/evenementen", "/contact", "/doneren", "/registreren", "/inloggen" };
+        
             for (int i = 0; i < NavBar.Length; i++)
             {
                 for (int j = 0; j < PageNames.Length; j++)
