@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NUnit.Framework;
+using OpenQA.Selenium.Interactions;
+using OpenQA.Selenium.Support.UI;
 
 namespace KameradenQA.Tests
 {
@@ -12,12 +14,14 @@ namespace KameradenQA.Tests
     {
         static IWebDriver driver;
         DriverFactory df;
+        Actions builder;
 
         [SetUp]
         public void initialize()
         {
             df = new DriverFactory("Chrome");
             driver = df.getDriver();
+            driver.Manage().Window.Maximize();
         }
 
         [Test]
@@ -63,6 +67,82 @@ namespace KameradenQA.Tests
                 Assert.Fail();
             }
         }
+
+        [Test]
+        public void EditProfileTest()
+        {
+            //Login
+            LoginTest();
+            //Go to profile
+            builder = new Actions(driver);
+            builder.MoveToElement(driver.FindElement(By.ClassName("dropdown"))).Build().Perform();
+            driver.FindElement(By.CssSelector("#nav-list > li:nth-child(7) > div > div.dropdown-content > a:nth-child(1)")).Click();
+            //Go to edit profile
+            driver.FindElement(By.CssSelector("#main > div > div:nth-child(1) > div > div > ul > li:nth-child(1) > a")).Click();
+
+            //Edit profile
+            driver.FindElement(By.Name("description")).Clear();
+            driver.FindElement(By.Name("description")).SendKeys("beschrijving");
+            driver.FindElement(By.Name("birth-date")).SendKeys("12221980");
+
+            int interests;
+            interests = driver.FindElements(By.Name("interest[]")).Count();
+
+            if (interests < 5)
+            {
+                int newInterest = interests + 1;
+                driver.FindElement(By.Id("addInterest")).Click();
+                driver.FindElement(By.XPath("//*[@id=\"main\"]/div/div/div/form/div[3]/div[1]/div/input[" + newInterest + "]")).SendKeys("dit moet veranderd worden");
+                interests = driver.FindElements(By.Name("interest[]")).Count();
+            }
+
+
+            for (int i = 1; i < interests + 1; i++)
+            {
+                string interestValue = i.ToString();
+                driver.FindElement(By.XPath("//*[@id=\"main\"]/div/div/div/form/div[3]/div[1]/div/input[" + i + "]")).Clear();
+                driver.FindElement(By.XPath("//*[@id=\"main\"]/div/div/div/form/div[3]/div[1]/div/input[" + i + "]")).SendKeys(interestValue);
+
+            }
+
+            int disabilities;
+            disabilities = driver.FindElements(By.Name("disability[]")).Count();
+
+            if (disabilities < 5)
+            {
+                int newDisability = disabilities + 1;
+                driver.FindElement(By.Id("addDisability")).Click();
+                driver.FindElement(By.XPath("//*[@id=\"main\"]/div/div/div/form/div[3]/div[2]/div/input[" + newDisability + "]")).SendKeys("dit moet veranderd worden");
+                disabilities = driver.FindElements(By.Name("disability[]")).Count();
+            }
+
+
+            for (int i = 1; i < disabilities + 1; i++)
+            {
+                string disabilityValue = i.ToString();
+                driver.FindElement(By.XPath("//*[@id=\"main\"]/div/div/div/form/div[3]/div[2]/div/input[" + i + "]")).Clear();
+                driver.FindElement(By.XPath("//*[@id=\"main\"]/div/div/div/form/div[3]/div[2]/div/input[" + i + "]")).SendKeys(disabilityValue);
+            }
+            //Save changes
+            driver.FindElement(By.CssSelector("#main > div > div > div > form > input[type=\"submit\"]:nth-child(5)")).Click();
+
+            //Go to profile
+            IWebElement dropdown = driver.FindElement(By.ClassName("dropdown"));
+            builder = new Actions(driver);
+            builder.MoveToElement(dropdown).Build().Perform();
+            driver.FindElement(By.CssSelector("#nav-list > li:nth-child(7) > div > div.dropdown-content > a:nth-child(1)")).Click();
+
+
+            //Check if the results came trough
+            for (int i = 2; i < interests + 2; i++)
+            {
+                if (driver.FindElement(By.XPath("//*[@id=\"main\"]/div/div[2]/div[1]/div/div/ul[1]/li[" + i + "]")).Text != (i - 1).ToString())
+                {
+                    Assert.Fail();
+                }
+            }
+        }
+
 
         [TearDown]
         public void finishTest()
