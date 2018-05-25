@@ -55,6 +55,62 @@ namespace KameradenQA.Tests
         }
 
         [Test]
+        public void RegisterValidationTest()
+        {
+            driver.Url = "Kameraden.test:8080/registreren";
+            
+            //Click next button to see which validations trigger
+            driver.FindElement(By.LinkText("Next")).Click();
+
+            //Check if the correct validations trigger
+            if (!driver.FindElement(By.Id("voornaam-error")).Enabled ||
+                !driver.FindElement(By.Id("achternaam-error")).Enabled ||
+                !driver.FindElement(By.Id("geboortedatum-error")).Enabled)
+            {
+                Assert.Fail();
+            }
+            //Fill in the form propely and continue
+            driver.FindElement(By.Id("voornaam")).SendKeys("Jan");
+            driver.FindElement(By.Id("achternaam")).SendKeys("Dijk");
+            driver.FindElement(By.Id("tussenvoegsel")).SendKeys("van");
+            driver.FindElement(By.Id("geboortedatum")).SendKeys("12221980");
+            driver.FindElement(By.LinkText("Next")).Click();
+
+           //Click next button to see which validations trigger
+            driver.FindElement(By.LinkText("Next")).Click();
+
+            //Check if the correct validations trigger
+            if (!driver.FindElement(By.Id("woonplaats-error")).Enabled ||
+               !driver.FindElement(By.Id("adres-error")).Enabled ||
+               !driver.FindElement(By.Id("postcode-error")).Enabled ||
+                !driver.FindElement(By.Id("telefoonnummer-error")).Enabled ||
+                 !driver.FindElement(By.Id("email-error")).Enabled)
+            {
+                Assert.Fail();
+            }
+            //Fill in the form properly and continue
+            driver.FindElement(By.Id("woonplaats")).SendKeys("Den Bosch");
+            driver.FindElement(By.Id("woonwijk")).SendKeys("n.v.t.");
+            driver.FindElement(By.Id("adres")).SendKeys("Jan de la barlaan 8");
+            driver.FindElement(By.Id("postcode")).SendKeys("5212NX");
+            driver.FindElement(By.Id("telefoonnummer")).SendKeys("0612345678");
+            driver.FindElement(By.Id("email")).SendKeys("test@test.test");
+
+            //Finish the form properly since there are no fields that are required.
+            driver.FindElement(By.Id("beroep")).SendKeys("Metselaar");
+            driver.FindElement(By.Id("sport")).SendKeys("Cricket");
+            driver.FindElement(By.Id("beperkingen")).SendKeys("Slecht zicht");
+            driver.FindElement(By.Name("beschrijving")).SendKeys("Ik vind het leuk om piano te spelen");
+            driver.FindElement(By.LinkText("Finish")).Click();
+
+            if (!driver.Url.Equals("http://kameraden.test:8080/inloggen"))
+            {
+                Assert.Fail();
+            }
+        }
+
+
+        [Test]
         public void LoginTest()
         {
             driver.Url = "Kameraden.test:8080/inloggen";
