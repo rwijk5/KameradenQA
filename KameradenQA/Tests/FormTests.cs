@@ -61,7 +61,7 @@ namespace KameradenQA.Tests
         public void RegisterValidationTest()
         {
             driver.Url = "Kameraden.test:8080/registreren";
-            
+
             //Click next button to see which validations trigger
             driver.FindElement(By.LinkText("Next")).Click();
 
@@ -79,7 +79,7 @@ namespace KameradenQA.Tests
             driver.FindElement(By.Id("geboortedatum")).SendKeys("12221980");
             driver.FindElement(By.LinkText("Next")).Click();
 
-           //Click next button to see which validations trigger
+            //Click next button to see which validations trigger
             driver.FindElement(By.LinkText("Next")).Click();
 
             //Check if the correct validations trigger
@@ -214,6 +214,20 @@ namespace KameradenQA.Tests
                     Assert.Fail();
                 }
             }
+        }
+
+        [Test]
+        public void ProfilesFilterTest()
+        {
+            LoginTest();
+            driver.Url = "Kameraden.test:8080/profielen";
+            driver.FindElement(By.Id("tagInpt")).SendKeys("Wandelen" + Keys.Enter);
+            if (!driver.FindElement(By.ClassName("name")).Text.Contains("Kay Smits") ||
+               driver.FindElement(By.ClassName("name")).Text.Contains("Tim Kotkamp"))
+            {
+                Assert.Fail();
+            }
+
         }
 
 
