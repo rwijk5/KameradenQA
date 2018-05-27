@@ -34,9 +34,9 @@ namespace KameradenQA.Tests
             {
                 for (int j = 0; j < PageNames.Length; j++)
                 {
-                    driver.Url = "Kameraden.test:" + Globals.portnummer + PageNames[i];
+                    driver.Url = Globals.address + PageNames[i];
                     driver.FindElement(By.LinkText(NavBar[j])).Click();
-                    if (!driver.Url.Equals("http://kameraden.test:" + Globals.portnummer + PageNames[j]))
+                    if (!driver.Url.Equals(Globals.address + PageNames[j]))
                     {
                         Assert.Fail();
                     }

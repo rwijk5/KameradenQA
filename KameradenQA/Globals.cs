@@ -8,6 +8,7 @@ namespace KameradenQA
 {
     public static class Globals
     {
-        static public string portnummer = "8080";
+        //static public string portnummer = "80";
+        static public string address = "http://localhost";
     }
 }
