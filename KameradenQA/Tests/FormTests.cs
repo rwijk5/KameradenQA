@@ -249,6 +249,39 @@ namespace KameradenQA.Tests
             }
         }
 
+        [Test]
+        public void UploadProfilePhotoTest()
+        {
+            LoginTest();
+            driver.Url = Globals.address + "/profielen/2";
+            driver.FindElement(By.Id("modalBtn")).Click();
+            driver.FindElement(By.Name("fileToUpload")).SendKeys(Environment.CurrentDirectory + "\\KameradenQA\\Files\\ProfilePhotoRightSize.png");
+            driver.FindElement(By.Name("submitBtn")).Click();
+
+            string loc = Globals.address + "/profielen";
+
+            if (driver.Url.ToString() != loc)
+            {
+                Assert.Fail();
+            }
+        }
+
+        [Test]
+        public void UploadFailProfilePhotoTest()
+        {
+            LoginTest();
+            driver.Url = Globals.address + "/profielen/2";
+            driver.FindElement(By.Id("modalBtn")).Click();
+            driver.FindElement(By.Name("fileToUpload")).SendKeys(Environment.CurrentDirectory + "\\KameradenQA\\Files\\ProfilePhotoWrongSize.png");
+            driver.FindElement(By.Name("submitBtn")).Click();
+
+            string loc = Globals.address + "/profielen";
+
+            if (driver.Url.ToString() == loc)
+            {
+                Assert.Fail();
+            }
+        }
 
         [TearDown]
         public void finishTest()
