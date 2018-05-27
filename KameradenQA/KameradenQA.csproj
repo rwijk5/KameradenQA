@@ -61,6 +61,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tests\BasicTests.cs" />
+    <Compile Include="Tests\CMSTests.cs" />
     <Compile Include="Tests\FormTests.cs" />
   </ItemGroup>
   <ItemGroup>
