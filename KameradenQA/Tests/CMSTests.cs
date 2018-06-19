@@ -39,7 +39,7 @@ namespace KameradenQA.Tests
             driver.FindElement(By.CssSelector("body > header > a:nth-child(2)")).Click();
             //driver.FindElement(By.LinkText("Jan van Dijk")).Click();
             //Je kan niet het juiste element selecteren.
-            driver.Url = "http://kameraden.test:8080/cms/gebruiker/keuren/1";
+            driver.Url = Globals.address + "/cms/gebruiker/keuren/1";
             driver.FindElement(By.LinkText("Goedkeuren")).Click();
         }
 

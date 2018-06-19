@@ -1,7 +1,9 @@
 ﻿using OpenQA.Selenium;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using NUnit.Framework;
@@ -220,11 +222,12 @@ namespace KameradenQA.Tests
         [Test]
         public void ProfilesFilterTest()
         {
-            //Logs in and enters the text "wandelen" in filters, the only account with this filter should be Kay Smits
+            //Logs in and enters the text "dieren" in filters, the only account with this filter should be Niels Kolsters
             LoginTest();
             driver.Url = Globals.address + "/profielen";
-            driver.FindElement(By.Id("tagInpt")).SendKeys("Wandelen" + Keys.Enter);
-            if (!driver.FindElement(By.ClassName("name")).Text.Contains("Kay Smits") ||
+            driver.FindElement(By.Id("tagInpt")).SendKeys("Dieren" + Keys.Enter);
+
+            if (driver.FindElement(By.ClassName("name")).Text.Contains("Kay Smits") ||
                driver.FindElement(By.ClassName("name")).Text.Contains("Tim Kotkamp"))
             {
                 Assert.Fail();
@@ -253,13 +256,16 @@ namespace KameradenQA.Tests
         public void UploadProfilePhotoTest()
         {
             LoginTest();
-            driver.Url = Globals.address + "/profielen/2";
+            driver.Url = Globals.address + "/profielen/1";
             driver.FindElement(By.Id("modalBtn")).Click();
-            driver.FindElement(By.Name("fileToUpload")).SendKeys(Environment.CurrentDirectory + "\\KameradenQA\\Files\\ProfilePhotoRightSize.png");
+            string path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            string newPath = Path.GetFullPath(Path.Combine(path, @"..\..\"));
+            driver.FindElement(By.Name("fileToUpload")).SendKeys(newPath + "\\Files\\ProfilePhotoRightSize.png");
             driver.FindElement(By.Name("submitBtn")).Click();
 
             string loc = Globals.address + "/profielen";
-
+            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(5));
+            wait.Until(ExpectedConditions.UrlToBe(loc));
             if (driver.Url.ToString() != loc)
             {
                 Assert.Fail();
@@ -270,13 +276,16 @@ namespace KameradenQA.Tests
         public void UploadFailProfilePhotoTest()
         {
             LoginTest();
-            driver.Url = Globals.address + "/profielen/2";
+            driver.Url = Globals.address + "/profielen/1";
             driver.FindElement(By.Id("modalBtn")).Click();
-            driver.FindElement(By.Name("fileToUpload")).SendKeys(Environment.CurrentDirectory + "\\KameradenQA\\Files\\ProfilePhotoWrongSize.png");
+            string path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            string newPath = Path.GetFullPath(Path.Combine(path, @"..\..\"));
+            driver.FindElement(By.Name("fileToUpload")).SendKeys(newPath + "\\Files\\ProfilePhotoWrongSize.png");
             driver.FindElement(By.Name("submitBtn")).Click();
 
             string loc = Globals.address + "/profielen";
-
+            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(5));
+            wait.Until(ExpectedConditions.UrlContains("http"));
             if (driver.Url.ToString() == loc)
             {
                 Assert.Fail();
